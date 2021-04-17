@@ -27,34 +27,34 @@ let persons = [
     }
 ];
 
-app.get('/',(request,response) => {
+app.get('/', (request, response) => {
     response.send('<h1> Hello World </h1>');
 })
 
-app.get('/api/persons',(request,response) => {
+app.get('/api/persons', (request, response) => {
     response.json(persons);
 })
 
-app.get('/api/persons/:id',(request,response) => {
+app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id);
-    const per = persons.find( person => person.id === id)
+    const per = persons.find(person => person.id === id)
 
-    if(per)
+    if (per)
         response.json(per)
     else
         response.status(404).end();
 })
 
-app.get('/api/info',(request,response) => {
+app.get('/api/info', (request, response) => {
     const personList = persons.length;
     const date = new Date();
     response.send(`<p> Phonebook has info for ${personList} people</p> <br> ${date}`);
 })
 
-app.delete('/api/persons/:id',(request,response) => {
+app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id);
     persons = persons.filter(person => {
-        if(person.id !== id){
+        if (person.id !== id) {
             //console.log("id did not match", personid)
             return true;
         }
@@ -65,22 +65,42 @@ app.delete('/api/persons/:id',(request,response) => {
     response.status(204).end();
 })
 
-function generateId()
-{
+function generateId() {
     const BIGNUM = 12345;
     return Math.floor(Math.random() * BIGNUM);
 }
 
-app.post('/api/persons', (request,response) => {
-    
-const person = request.body;
+app.post('/api/persons', (request, response) => {
 
-person.id = generateId();
+    const person = request.body;
 
-persons.concat(person);
-console.log(person);
+    if (person.name === undefined || person.name === "")
+        response.status(400).json({
+            error: 'Name is missing'
+        });
 
-response.json(person);
+    if (person.number === undefined || person.number === "")
+        response.status(400).json({
+            error: 'Number is missing'
+        });
+
+     let alreadyPresent = persons.find(per => person.name === per.name);
+     
+     if(alreadyPresent)
+        response.status(400).json({
+           error: 'Name is already present'
+       });
+
+    if (person.name === undefined || person.name === "")
+        response.status(400).json({
+            error: 'Name is missing'
+        });
+
+    person.id = generateId();
+    persons.concat(person);
+    //  console.log(person);
+
+    response.json(person);
 
 })
 
