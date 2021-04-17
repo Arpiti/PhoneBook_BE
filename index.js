@@ -5,10 +5,14 @@ const app = express();
 
 app.use(express.json());
 
-app.use(morgan('combined'));
+morgan.token('body', function (req, res) {
+    console.log(req.body);
+    return JSON.stringify(req.body)
+});
 
-console.log(morgan('tiny'));
+app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'));
 
+//
 let persons = [
     {
         id: 1,
@@ -37,7 +41,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
+    // console.log('Hi logger >>', morgan(':method'));
+
     response.json(persons);
+
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -89,12 +96,12 @@ app.post('/api/persons', (request, response) => {
             error: 'Number is missing'
         });
 
-     let alreadyPresent = persons.find(per => person.name === per.name);
+    let alreadyPresent = persons.find(per => person.name === per.name);
 
-     if(alreadyPresent)
+    if (alreadyPresent)
         response.status(400).json({
-           error: 'Name is already present'
-       });
+            error: 'Name is already present'
+        });
 
     if (person.name === undefined || person.name === "")
         response.status(400).json({
