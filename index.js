@@ -50,6 +50,20 @@ app.get('/api/info',(request,response) => {
     response.send(`<p> Phonebook has info for ${personList} people</p> <br> ${date}`);
 })
 
+app.delete('/api/persons/:id',(request,response) => {
+    const id = Number(request.params.id);
+    persons = persons.filter(person => {
+        if(person.id !== id){
+            //console.log("id did not match", personid)
+            return true;
+        }
+        return false;
+
+    })
+    console.log(persons);
+    response.status(204).end();
+})
+
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server listening at ${PORT}`);
