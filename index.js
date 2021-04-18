@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
@@ -12,26 +13,28 @@ morgan.token('body', function (req, res) {
 
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'));
 
+app.use(cors());
+
 //
 let persons = [
     {
         id: 1,
-        name: 'Arto Hellas1',
+        name: 'Arto Hellas',
         number: "041-123456"
     },
     {
         id: 2,
-        name: 'Arto Hellas2',
+        name: 'Arpit Rai',
         number: "042-123456"
     },
     {
         id: 3,
-        name: 'Arto Hellas3',
+        name: 'Baksho Hel',
         number: "043-123456"
     },
     {
         id: 4,
-        name: 'Arto Hellas4',
+        name: 'Marti Felish',
         number: "044-123456"
     }
 ];

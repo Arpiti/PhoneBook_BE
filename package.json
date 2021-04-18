@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Arpiti/PhoneBook_BE#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "modules": "^0.4.0",
     "morgan": "^1.10.0",
