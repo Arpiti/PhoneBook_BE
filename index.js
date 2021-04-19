@@ -113,7 +113,7 @@ app.post('/api/persons', (request, response) => {
         });
 
     person.id = generateId();
-    persons.concat(person);
+    persons = persons.concat(person);
     //  console.log(person);
 
     response.json(person);
